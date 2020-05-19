@@ -1,0 +1,13 @@
+Name	Group
+pMIG_plus_1	pMIG_plus
+pMIG_plus_2	pMIG_plus
+pMIG_plus_3	pMIG_plus
+pMIG_plus_4	pMIG_plus
+pMIG_plus_5	pMIG_plus
+pMIG_plus_6	pMIG_plus
+pMIG_BCR_ABL_1	pMIG_BCR_ABL
+pMIG_BCR_ABL_2	pMIG_BCR_ABL
+pMIG_BCR_ABL_3	pMIG_BCR_ABL
+pMIG_BCR_ABL_4	pMIG_BCR_ABL
+pMIG_BCR_ABL_5	pMIG_BCR_ABL
+pMIG_BCR_ABL_6	pMIG_BCR_ABL

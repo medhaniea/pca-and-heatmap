@@ -1,0 +1,112 @@
+---
+title: "pca-and-heatmap.Rmd"
+author: "Medhanie Mulaw"
+date: "5/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Principal Component Analysis (PCA) and heatmap based on gene expression data
+
+The first part of the script generates interactive PCA based 3D plot using the function prcomp from the stats package (R Core Team, 2019) and rgl (Adler et al., 2020). The second part of the script generates heatmap from gene expression data using the Heatplus package (Ploner, 2020).
+
+In the first step, we load all the required libraries and functions. The corrdist and hclust.avl are distance and clustering options as described in the Heatplus package. 
+
+```{load libraries and functions}
+library("Heatplus")
+library("rgl")
+library("gplots")
+library("Heatplus")
+corrdist = function(x) as.dist(1-cor(t(x)))
+hclust.avl = function(x) hclust(x, method="average")
+```
+
+## Load expression Data, grouping factors, and coloring schemes
+
+Normalized expression dataset (preprocessing steps to generate and normalize count data are not described here), the grouping parameters (treatments or experimental arms), and colors of choice are loaded and defined. We then run the pca as described below:
+
+```{PCA (data load)}
+# Expression Data
+Data<-read.table("./Data/exprs_example.txt",header=TRUE,sep="\t",
+                 stringsAsFactors = F)
+# Grouping paramter
+pheno<-read.table("./Data/Pheno.txt",header=TRUE,sep="\t",
+                  stringsAsFactors = F)
+# Color
+color<-c(rep("Green3",6),rep("blue",6))
+# 3d perspective parameters
+zoom<-1
+userMatrix<-as.matrix(read.table("./Data/userMatrix.txt"),header=F)
+windowRect<-as.matrix(read.table("./Data/windowRect.txt"),header=F)
+# pca run
+pca.result<-prcomp(t(Data),center=TRUE)
+```
+
+## Perform PCA and generate the 3D plot
+
+Additionally, one can note above that 3d plot perspective parameters have been predfined (zoom, userMatrix, and windowRect). These can be loaded from text files with predifined values or one can interactively experiment with the 3d plot to obtain the desired viewing angle and save the values. These settings are very helpful in reproducing the 3d plot in a given perspective. Following the pca and parameter settings, one can the generate the plot as follows:
+
+```{PCA (pca run and plot)}
+
+# Display plot
+open3d(zoom = zoom, userMatrix = userMatrix, windowRect=windowRect)
+plot3d(pca.result$x[,1],pca.result$x[,2],pca.result$x[,3],type="s",
+       col=color,box=FALSE,
+       xlab=paste("PC1 (",round((summary(pca.result)$importance[2,1])*100,
+                                digits=2),"%)"),
+       ylab=paste("PC2 (",round((summary(pca.result)$importance[2,2])*100,
+                                digits=2),"%)"),
+       zlab=paste("PC3 (",round((summary(pca.result)$importance[2,3])*100,
+                                digits=2),"%)"))
+# generate pdf
+# rgl.postscript("pca_3d.pdf","pdf")
+```
+
+The optional step of saving into a portable document format (pdf) has also been indicated.
+
+## Generating heatmap using a predifined subset of gene expression data
+
+A subet of gene expression dataset (for instance from a differential expression analysis) can be visualized using various tools and packages. We describe here how one can easily generate such plot using the R package Heatplus. 
+
+Similar to the steps under PCA, we first load the desired dataset. Optionally, one can also load grouping parameter to later add group annotation to the heatmap.
+
+```{Heatmap (load target list)}
+# load data matrix
+Selected_genes<-read.table("./Data/Selected_genes.txt",
+                           header=T,sep="\t",row.names = 1)
+# grouping parameter
+#pheno.2<-read.table("./Data/Pheno.txt",header=TRUE,sep="\t",
+#                  stringsAsFactors = F)
+```
+
+The plot is then generated as follows:
+
+```{Heatmap (generate heatmap)}
+heatmap = annHeatmap2(as.matrix(Selected_genes), 
+                      scale="row",col=bluered(228),
+                      dendrogram =list(clustfun=hclust.avl,
+                                       distfun=corrdist),
+                      cluster=list(Col=list(cuth=0.1),
+                                   Row=list(cuth=1.6)),
+                      labels=list(rows=4,columns=3,nrow=13),
+                      legend=3)
+plot(heatmap)
+```
+
+```{SessionInfo}
+sessionInfo()
+```
+
+References:
+  R Core Team (2019). R: A language and environment for statistical computing.
+  R Foundation for Statistical Computing, Vienna, Austria.
+  <https://www.R-project.org/>.
+  
+  Daniel Adler, Duncan Murdoch and others (2020). rgl: 3D Visualization Using
+  OpenGL. <https://CRAN.R-project.org/package=rgl>
+  
+  Alexander Ploner (2020). Heatplus: Heatmaps with row and/or column
+  covariates and colored clusters. <https://github.com/alexploner/Heatplus>
