@@ -2,7 +2,9 @@
 title: "pca-and-heatmap.Rmd"
 author: "Medhanie Mulaw"
 date: "5/19/2020"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
