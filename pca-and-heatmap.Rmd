@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Principal Component Analysis (PCA) and heatmap based on gene expression data
 
-The first part of the script generates interactive PCA based 3D plot using the function prcomp from the stats package (R Core Team, 2019) and rgl (Adler et al., 2020). The second part of the script generates heatmap from gene expression data using the Heatplus package (Ploner, 2020).
+The first part of the script generates interactive PCA based 3D plot using the function prcomp from the stats (<https://www.R-project.org/>) and rgl (<https://CRAN.R-project.org/package=rgl>) packages. The second part of the script generates heatmap from gene expression data using Heatplus (<https://github.com/alexploner/Heatplus>) and coloring schemes from the gplots package (<https://CRAN.R-project.org/package=gplots>).
 
 In the first step, we load all the required libraries and functions. The corrdist and hclust.avl are distance and clustering options as described in the Heatplus package. 
 
@@ -21,7 +21,6 @@ In the first step, we load all the required libraries and functions. The corrdis
 library("Heatplus")
 library("rgl")
 library("gplots")
-library("Heatplus")
 corrdist = function(x) as.dist(1-cor(t(x)))
 hclust.avl = function(x) hclust(x, method="average")
 ```
@@ -104,12 +103,17 @@ sessionInfo()
 
 References:
 
-  R Core Team (2019). R: A language and environment for statistical computing.
+  R Core Team. R: A language and environment for statistical computing.
   R Foundation for Statistical Computing, Vienna, Austria.
   <https://www.R-project.org/>.
   
-  Daniel Adler, Duncan Murdoch and others (2020). rgl: 3D Visualization Using
-  OpenGL. <https://CRAN.R-project.org/package=rgl>
+  Daniel Adler, Duncan Murdoch and others. rgl: 3D Visualization Using
+  OpenGL. <https://CRAN.R-project.org/package=rgl>.
   
-  Alexander Ploner (2020). Heatplus: Heatmaps with row and/or column
-  covariates and colored clusters. <https://github.com/alexploner/Heatplus>
+  Alexander Ploner. Heatplus: Heatmaps with row and/or column
+  covariates and colored clusters. <https://github.com/alexploner/Heatplus>.
+  
+  Gregory R. Warnes, Ben Bolker, Lodewijk Bonebakker, Robert Gentleman,
+  Wolfgang Huber, Andy Liaw, Thomas Lumley, Martin Maechler, Arni Magnusson,
+  Steffen Moeller, Marc Schwartz and Bill Venables. gplots: Various R
+  Programming Tools for Plotting Data. <https://CRAN.R-project.org/package=gplots>.
