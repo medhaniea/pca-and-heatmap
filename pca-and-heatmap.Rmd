@@ -1,6 +1,6 @@
 ---
 title: "pca-and-heatmap.Rmd"
-author: "Medhanie Mulaw"
+author: "Medhanie A. Mulaw"
 date: "5/19/2020"
 output:
   html_document: default
@@ -103,6 +103,7 @@ sessionInfo()
 ```
 
 References:
+
   R Core Team (2019). R: A language and environment for statistical computing.
   R Foundation for Statistical Computing, Vienna, Austria.
   <https://www.R-project.org/>.
